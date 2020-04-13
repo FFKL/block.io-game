@@ -1,0 +1,24 @@
+{
+  "name": "block.io-game",
+  "version": "0.0.0",
+  "description": "Multiplayer game",
+  "main": "index.js",
+  "repository": "git@github.com:FFKL/block.io-game.git",
+  "author": "dmitrii <ffklffkl@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "yarn build:public && node index.js",
+    "build:public": "webpack"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "jquery": "^3.5.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
