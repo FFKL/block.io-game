@@ -1,44 +1,53 @@
 import $ from 'jquery';
+import 'popper.js';
+import 'bootstrap';
 import io from 'socket.io-client';
-import uid from 'uid';
-import { Game } from './game';
 
 import '../styles/index.css'
+
+import { Game } from './game';
 import { Player } from "./Player";
 import { FPS } from "./constants";
 
-const players = {};
-const socket = io('http://localhost:3001', { transports: ['websocket', 'polling']});
-socket.on('message', (data) => {
-    $('h1').text(data);
+$(document).ready(() => {
+    $('#generate-link').modal()
+    $('#generate-link-btn').on('click', () => {
+        const origin = document.location.origin;
+
+        fetch(`${origin}/roomId`)
+            .then(res => res.text())
+            .then(id => `${origin}/${id}`)
+            .then(link => $('#generate-input').val(link));
+    })
 })
+
+const players = {};
+let you = null;
+const socket = io(origin, { transports: ['websocket', 'polling']});
+
 socket.on('move', ({ id, state: { x, y } }) => {
     if (!players[id]) {
         players[id] = new Player(x, y, context)
     }
-
     players[id].setState({ x, y })
 })
-socket.emit('join', 'example-room')
+
+socket.on('game-connection', ({ player: { state: { x, y }, color} }) => {
+    you = new Player(x, y, color, context);
+    // you.onMove((x, y) => socket.emit('move', { state: { x, y }, room: 'example-room' }))
+    document.addEventListener('keydown', e => you.updatePosition(e.key));
+});
+socket.emit('join', { room: 'example-room' })
 
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
 
-const player = new Player(10, 20, context);
 const game = new Game(context);
-
-player.onMove((x, y) => socket.emit('move', { state: { x, y }, room: 'example-room' }))
-
-document.addEventListener('keydown', e => player.updatePosition(e.key));
 
 const intervalId = setInterval(() => {
     game.clean();
-    player.draw();
+    if (you) you.draw();
     for(const play of Object.values(players)) {
         play.draw();
     }
 }, 1000 / FPS);
-
-$('h1').addClass('red');
-
-$('#generate-button').on('click', () => $('#generate-input').val(uid(10)))

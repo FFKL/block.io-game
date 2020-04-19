@@ -1,8 +1,9 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP } from "./constants";
 
 export class Player {
-    constructor(x, y, ctx) {
+    constructor(x, y, color, ctx) {
         this.ctx = ctx;
+        this.color = color;
         this.x = x;
         this.y = y;
         this.width = 30;
@@ -51,7 +52,7 @@ export class Player {
     }
 
     draw() {
-        this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+        this.ctx.fillStyle = this.color;
         this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }

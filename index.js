@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/dist/index.html`);
 });
 
-app.get('/roomId', (req, res) => res.send(uid(16)));
+app.get('/roomId', (req, res) => res.send(generateId(16)));
 
 io.on('connection', (socket) => {
     socket.on('join', ({ room, playerId }) => {
@@ -25,16 +25,18 @@ io.on('connection', (socket) => {
         if (!games.has(room)) games.set(room, new Game());
         const game = games.get(room);
         const player = findOrCreatePlayer(playerId, game);
-
-        socket.emit('game-connection')
+        socket.emit('game-connection', { player });
+        io.to(room).emit('new-state', { game })
         socket.on('move', ({ id, state }) => {
-            socket.broadcast.to(room).emit('move', { id, state })
+            const player = game.getPlayer(id);
+            player.setPosition(state);
+            socket.broadcast.to(room).emit('new-state', { game })
         })
     })
 });
 
 function findOrCreatePlayer(playerId, game) {
-    if (playerId && game.hasPlayer(playerId)) {
+    if (!playerId || !game.hasPlayer(playerId)) {
         const player = createPlayer();
         game.addPlayer(player);
 
@@ -60,7 +62,7 @@ function generateY() {
 }
 
 function createPlayer() {
-    const playerId = uid(10);
+    const playerId = generateId(10);
     const color = randomColor({ luminocity: 'dark', format: 'rgb' });
     const position = { x: generateX(), y: generateY() };
     const name = generateName();
@@ -129,9 +131,5 @@ class Player {
                 y2: y + SQUARE_SIDE
             }
         )
-    }
-
-    toJSON() {
-        return JSON.stringify(this);
     }
 }

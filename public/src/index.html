@@ -6,13 +6,28 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-<h1>Hello!</h1>
-<div class="input-group mb-3">
-    <input type="text" class="form-control" id="generate-input">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="generate-button">Generate</button>
+<h1>Welcome to amazing Block.io game</h1>
+<canvas id="game" width="720" height="480"></canvas>
+<div id="generate-link" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Invite your friends!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="generate-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="generate-link-btn" type="button" class="btn btn-secondary">Generate</button>
+                <button type="button" class="btn btn-primary">Play!</button>
+            </div>
+        </div>
     </div>
 </div>
-<canvas id="game" width="720" height="480"></canvas>
 </body>
 </html>
