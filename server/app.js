@@ -1,19 +1,22 @@
-const express = require('express');
+import express from 'express';
+import randomColor from 'randomcolor';
+import socketIO from 'socket.io';
+import generateId from 'uid';
+import { random as generateName } from 'cat-names';
+import path from 'path';
+
 const app = express();
 const server = app.listen(3001);
-const io = require('socket.io')(server);
-const randomColor = require('randomcolor');
-const generateId = require('uid');
-const generateName = require('cat-names').random;
+const io = socketIO(server);
 
 const CANVAS_WIDTH = 720, CANVAS_HEIGHT = 480;
 const SQUARE_SIDE = 30;
 const games = new Map();
 
-app.use(express.static('public/dist'))
+app.use(express.static(path.resolve(__dirname, '../public')))
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/dist/index.html`);
+    res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
 app.get('/roomId', (req, res) => res.send(generateId(16)));

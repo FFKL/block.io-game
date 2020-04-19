@@ -3,15 +3,15 @@ const path = require('path');
 
 module.exports = {
     mode: "development",
-    entry: './public/src/app/index.js',
+    entry: './public/app/index.js',
     output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'public/dist'),
+        filename: 'index.js',
+        path: path.resolve(__dirname, 'dist/public'),
     },
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
-            template: path.resolve(__dirname, 'public/src/index.html'),
+            template: path.resolve(__dirname, 'public/index.html'),
             filename: 'index.html'
         })
     ],

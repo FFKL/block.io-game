@@ -2,15 +2,22 @@
   "name": "block.io-game",
   "version": "0.0.0",
   "description": "Multiplayer game",
-  "main": "index.js",
+  "main": "dist/app.js",
   "repository": "git@github.com:FFKL/block.io-game.git",
   "author": "dmitrii <ffklffkl@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "yarn build:public && node index.js",
-    "start:dev": "webpack-dev-server",
-    "build:public": "webpack"
+    "start": "npm-run-all build server",
+    "build": "npm-run-all clean server:build public:build",
+    "clean": "rimraf dist",
+    "public:watch": "webpack-dev-server",
+    "public:build": "webpack",
+    "server": "node ./dist/server/app.js",
+    "server:start": "npm-run-all server:clean server:build",
+    "server:watch": "nodemon",
+    "server:build": "babel ./server --out-dir ./dist/server",
+    "server:clean": "rimraf dist/server"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
@@ -24,11 +31,25 @@
     "uid": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "css-loader": "^3.5.2",
     "html-webpack-plugin": "^4.2.0",
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "style-loader": "^1.1.4",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "babel": {
+    "presets": ["@babel/preset-env"]
+  },
+  "nodemonConfig": {
+    "exec": "yarn server:start",
+    "watch": ["server/*"],
+    "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"]
   }
 }
