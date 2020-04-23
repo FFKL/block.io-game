@@ -2,9 +2,10 @@ import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP } from "./constants";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../server/constants";
 
 export class Player {
-    constructor(x, y, color, ctx) {
+    constructor(x, y, color, id, ctx) {
         this.ctx = ctx;
         this.color = color;
+        this.id = id;
         this.x = x;
         this.y = y;
         this.width = 30;

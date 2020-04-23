@@ -18,6 +18,10 @@ export class Game {
         return this.players.some(({ id }) => id === playerId);
     }
 
+    reloadTreasure() {
+        this.treasure = createTreasure();
+    }
+
     ensurePlayer(playerId) {
         if (!playerId || !this.hasPlayer(playerId)) {
             const player = createPlayer();

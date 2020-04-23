@@ -28,11 +28,20 @@ io.on('connection', (socket) => {
         const game = games.get(room);
         const player = game.ensurePlayer(playerId);
         socket.emit('game-connection', { player });
-        io.to(room).emit('new-state', { game })
+        io.to(room).emit('state', { game })
         socket.on('move', ({ id, state }) => {
             const player = game.getPlayer(id);
             player.setPosition(state);
-            socket.broadcast.to(room).emit('new-state', { game })
+            recalculateState(player, game);
+            io.to(room).emit('state', { game })
         })
     })
 });
+
+
+function recalculateState(player, game) {
+    if (player.isWinner(game.treasure)) {
+        game.reloadTreasure();
+        player.score += 1;
+    }
+}

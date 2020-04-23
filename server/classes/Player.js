@@ -16,7 +16,7 @@ export class Player {
         return this.isSquaresIntersection(
             {
                 x1: this.state.x,
-                y1: this.state,
+                y1: this.state.y,
                 x2: this.state.x + SQUARE_SIDE,
                 y2: this.state.y + SQUARE_SIDE
             },
@@ -30,6 +30,10 @@ export class Player {
     }
 
     isSquaresIntersection(a, b) {
-        return (a.y1 < b.y2 || a.y2 > b.y1 || a.x2 < b.x1 || a.x1 > b.x2);
+        return this.isDotInside({ x: a.x1, y: a.y1 }, b) || this.isDotInside({ x: b.x1, y: b.y1 }, a);
+    }
+
+    isDotInside(dot, square) {
+        return dot.x > square.x1 && dot.x < square.x2 && dot.y > square.y1 && dot.y < square.y2
     }
 }

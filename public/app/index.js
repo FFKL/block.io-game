@@ -9,8 +9,9 @@ import { Game } from './game';
 import { Player } from "./Player";
 import { FPS } from "./constants";
 
+const socket = io(origin, { transports: ['websocket', 'polling'] });
+
 $(document).ready(() => {
-    $('#generate-link').modal()
     $('#generate-link-btn').on('click', () => {
         const origin = document.location.origin;
 
@@ -19,25 +20,36 @@ $(document).ready(() => {
             .then(id => `${origin}/${id}`)
             .then(link => $('#generate-input').val(link));
     })
-})
 
-const players = {};
-let you = null;
-const socket = io(origin, { transports: ['websocket', 'polling']});
+    const roomId = parseRoomId(document.location.pathname);
 
-socket.on('move', ({ id, state: { x, y } }) => {
-    if (!players[id]) {
-        players[id] = new Player(x, y, context)
+    if (roomId) {
+        socket.emit('join', { room: roomId })
+    } else {
+        $('#generate-link').modal()
     }
-    players[id].setState({ x, y })
+
+    socket.on('game-connection', ({ player: { id, state: { x, y }, color } }) => {
+        you = new Player(x, y, color, id, context);
+        you.onMove((x, y) => socket.emit('move', { id, state: { x, y } }))
+        document.addEventListener('keydown', e => you.updatePosition(e.key));
+    });
 })
 
-socket.on('game-connection', ({ player: { state: { x, y }, color} }) => {
-    you = new Player(x, y, color, context);
-    // you.onMove((x, y) => socket.emit('move', { state: { x, y }, room: 'example-room' }))
-    document.addEventListener('keydown', e => you.updatePosition(e.key));
-});
-socket.emit('join', { room: 'example-room' })
+function parseRoomId(pathname) {
+    const [, id] = pathname.split('/');
+
+    return id;
+}
+
+let rivals = [];
+let you = {};
+let treasure = {};
+
+socket.on('state', ({ game }) => {
+    rivals = game.players.filter(p => p.id !== you.id);
+    treasure = game.treasure;
+})
 
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
@@ -46,8 +58,12 @@ const game = new Game(context);
 
 const intervalId = setInterval(() => {
     game.clean();
-    if (you) you.draw();
-    for(const play of Object.values(players)) {
-        play.draw();
-    }
+    draw({ color: 'yellow', state: { ...treasure }})
+    if (you.draw) you.draw();
+    rivals.forEach(rival => draw(rival));
 }, 1000 / FPS);
+
+function draw({ color, state: { x, y } }) {
+    context.fillStyle = color;
+    context.fillRect(x, y, 30, 30);
+}
