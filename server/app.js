@@ -4,13 +4,11 @@ import generateId from "uid";
 import socketIO from 'socket.io';
 
 import { Game } from "./classes/Game";
+import { GamesRegister } from "./classes/GamesRegister";
 
 const app = express();
 const server = app.listen(3001);
 const io = socketIO(server);
-
-// TODO: extract games object
-const games = new Map();
 
 app.use(express.static(path.resolve(__dirname, '../public')))
 
@@ -20,28 +18,31 @@ app.get('/:roomId', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
+const gamesRegister = new GamesRegister();
+
 io.on('connection', (socket) => {
     socket.on('join', ({ room, playerId }) => {
         if (!room) console.error('Room name is not exist');
-        socket.join(room);
-        if (!games.has(room)) games.set(room, new Game());
-        const game = games.get(room);
-        const player = game.ensurePlayer(playerId);
-        socket.emit('game-connection', { player });
-        io.to(room).emit('state', { game })
-        socket.on('move', ({ id, state }) => {
-            const player = game.getPlayer(id);
-            player.setPosition(state);
-            recalculateState(player, game);
-            io.to(room).emit('state', { game })
-        })
+        initGameRoom(socket, room, playerId);
     })
 });
 
+function initGameRoom(socket, roomId, playerId) {
+    const game = gamesRegister.ensureRoom(roomId);
+    const player = game.ensurePlayer(playerId);
 
-function recalculateState(player, game) {
-    if (player.isWinner(game.treasure)) {
-        game.reloadTreasure();
-        player.score += 1;
-    }
+    socket.join(roomId);
+    socket.emit('game-connection', { player });
+    io.to(roomId).emit('state', { game })
+
+    socket.on('move', ({ id, state }) => {
+        game.updatePlayerPosition(id, state);
+
+        io.to(roomId).emit('state', { game })
+    })
+
+    socket.on('disconnect', () => {
+        game.disconnectPlayer(playerId);
+        io.to(roomId).emit('state', { game })
+    })
 }

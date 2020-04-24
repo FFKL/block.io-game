@@ -6,10 +6,23 @@ export class Player {
         this.color = color;
         this.state = { x, y };
         this.score = score;
+        this.isConnected = true;
+    }
+
+    disconnected() {
+        this.isConnected = false;
+    }
+
+    connected() {
+        this.isConnected = true;
     }
 
     setPosition({ x, y }) {
         this.state = { ...this.state, x, y }
+    }
+
+    increaseScore() {
+        this.score += 1;
     }
 
     isWinner({ x, y }) {

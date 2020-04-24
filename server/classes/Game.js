@@ -18,8 +18,22 @@ export class Game {
         return this.players.some(({ id }) => id === playerId);
     }
 
-    reloadTreasure() {
-        this.treasure = createTreasure();
+    updatePlayerPosition(playerId, position) {
+        const player = this.getPlayer(playerId);
+
+        if (!player) return;
+
+        player.setPosition(position);
+
+        if (player.isWinner(this.treasure)) {
+            this.treasure = createTreasure();
+            player.increaseScore();
+        }
+    }
+
+    disconnectPlayer(id) {
+        const player = this.getPlayer(id);
+        if (player) player.disconnected();
     }
 
     ensurePlayer(playerId) {
@@ -29,7 +43,9 @@ export class Game {
 
             return player;
         }
+        const player = this.getPlayer(playerId);
+        player.connected();
 
-        return this.getPlayer(playerId);
+        return player;
     }
 }
