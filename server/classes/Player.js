@@ -13,7 +13,7 @@ export class Player {
     }
 
     isWinner({ x, y }) {
-        return this.isSquaresIntersection(
+        return this.isCollision(
             {
                 x1: this.state.x,
                 y1: this.state.y,
@@ -29,11 +29,10 @@ export class Player {
         )
     }
 
-    isSquaresIntersection(a, b) {
-        return this.isDotInside({ x: a.x1, y: a.y1 }, b) || this.isDotInside({ x: b.x1, y: b.y1 }, a);
-    }
-
-    isDotInside(dot, square) {
-        return dot.x > square.x1 && dot.x < square.x2 && dot.y > square.y1 && dot.y < square.y2
+    isCollision(rect1, rect2) {
+        return rect1.x1 < rect2.x2 &&
+            rect1.x2 > rect2.x1 &&
+            rect1.y1 < rect2.y2 &&
+            rect1.y2 > rect2.y1
     }
 }
