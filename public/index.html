@@ -3,11 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>block.io</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1>Welcome to amazing Block.io game</h1>
-<canvas id="game" width="720" height="480"></canvas>
+<h1 class="title"> 🎮Welcome to Amazing Block.io Game</h1>
+<main class="game">
+    <div class="game__field">
+        <canvas id="game" width="720" height="480"></canvas>
+    </div>
+    <div class="game__score score">
+        <h2 class="score__title">Score 🏆</h2>
+        <ul id="score" class="score__list">
+            <li>Test - 0</li>
+        </ul>
+    </div>
+</main>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+        </div>
+    </div>
+</div>
 <div id="generate-link" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -19,7 +36,9 @@
             </div>
             <div class="modal-body">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="generate-input">
+                    <label>
+                        <input type="text" class="form-control" id="generate-input">
+                    </label>
                 </div>
             </div>
             <div class="modal-footer">

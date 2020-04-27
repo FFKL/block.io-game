@@ -1,7 +1,30 @@
-.red {
-    color: red;
+.title {
+    text-align: center;
+    margin: 1em 0;
+}
+.game {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
 }
 
-canvas {
+.game__field {
+    width: 70%;
+}
+
+.game__field > canvas {
     border: 1px solid black;
+}
+
+.score__list {
+    padding: 0;
+    list-style: none;
+}
+
+.score {
+
+}
+
+.score__title {
+    text-align: center;
 }

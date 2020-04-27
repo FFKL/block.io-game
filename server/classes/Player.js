@@ -3,6 +3,7 @@ import { SQUARE_SIDE } from "../constants";
 export class Player {
     constructor(id, name, color, { x, y }, score = 0) {
         this.id = id;
+        this.name = name;
         this.color = color;
         this.state = { x, y };
         this.score = score;

@@ -3,7 +3,8 @@ import 'popper.js';
 import 'bootstrap';
 import io from 'socket.io-client';
 
-import '../styles/index.css'
+import '../styles/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Game } from './classes/Game';
 import { Player } from "./classes/Player";
@@ -35,10 +36,37 @@ $(document).ready(() => {
         $('#generate-link').modal()
     }
 
+    let prevState = null;
+
     socket.on('game-connection', ({ player }) => initGame(player, game, context));
-    socket.on('state', (state) => game.updateState(state.game))
+    socket.on('state', (state) => {
+        updateState(game, prevState, state);
+        prevState = state;
+    })
     startGameLoop(() => game.draw());
 })
+
+function updateState(game, prevState, currState) {
+    if (!prevState || !isSameScore(prevState, currState)) {
+        updateScoreView(currState.game.players);
+    }
+    game.updateState(currState.game)
+}
+
+function updateScoreView(players) {
+    const htmlList = [...players]
+        .sort((a, b) => b.score - a.score)
+        .map(p => `<li style="color: ${p.color}">${p.name} - ${p.score}</li>`)
+        .join();
+    $('#score').html(htmlList);
+}
+
+function isSameScore(prev, curr) {
+    const prevScore = prev.game.players.reduce((acc, val) => acc + val.score, 0);
+    const currScore = curr.game.players.reduce((acc, val) => acc + val.score, 0);
+
+    return prevScore === currScore;
+}
 
 function initGame({ id, state: { x, y }, color }, game, ctx) {
     sessionStorage.setItem('playerId', id);
