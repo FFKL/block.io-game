@@ -5,14 +5,18 @@ import io from 'socket.io-client';
 
 import '../styles/index.css'
 
-import { Game } from './game';
-import { Player } from "./Player";
+import { Game } from './classes/Game';
+import { Player } from "./classes/Player";
 import { FPS } from "./constants";
 
 const socket = io(origin, { transports: ['websocket', 'polling'] });
 
-
 $(document).ready(() => {
+    const canvas = document.getElementById("game");
+    const context = canvas.getContext("2d");
+
+    const game = new Game(context);
+
     $('#generate-link-btn').on('click', () => {
         const origin = document.location.origin;
 
@@ -31,13 +35,18 @@ $(document).ready(() => {
         $('#generate-link').modal()
     }
 
-    socket.on('game-connection', ({ player: { id, state: { x, y }, color } }) => {
-        sessionStorage.setItem('playerId', id);
-        you = new Player(x, y, color, id, context);
-        you.onMove((x, y) => socket.emit('move', { id, state: { x, y } }))
-        document.addEventListener('keydown', e => you.updatePosition(e.key));
-    });
+    socket.on('game-connection', ({ player }) => initGame(player, game, context));
+    socket.on('state', (state) => game.updateState(state.game))
+    startGameLoop(() => game.draw());
 })
+
+function initGame({ id, state: { x, y }, color }, game, ctx) {
+    sessionStorage.setItem('playerId', id);
+    const player = new Player(x, y, color, id, ctx);
+    player.onMove((x, y) => socket.emit('move', { id, state: { x, y } }))
+    game.setPlayer(player)
+    document.addEventListener('keydown', e => player.updatePosition(e.key));
+}
 
 function parseRoomId(pathname) {
     const [, id] = pathname.split('/');
@@ -45,30 +54,14 @@ function parseRoomId(pathname) {
     return id;
 }
 
-let rivals = [];
-let you = {};
-let treasure = {};
+function startGameLoop(callback) {
+    const intervalId = setInterval(() => {
+        requestAnimationFrame(callback);
+    }, 1000 / FPS);
 
-socket.on('state', ({ game }) => {
-    rivals = game.players.filter(p => p.id !== you.id && p.isConnected);
-    treasure = game.treasure;
-})
-
-const canvas = document.getElementById("game");
-const context = canvas.getContext("2d");
-
-const game = new Game(context);
-
-const intervalId = setInterval(() => {
-    requestAnimationFrame(() => {
-        game.clean();
-        draw({ color: 'yellow', state: { ...treasure }})
-        if (you.draw) you.draw();
-        rivals.forEach(rival => draw(rival));
-    })
-}, 1000 / FPS);
-
-function draw({ color, state: { x, y } }) {
-    context.fillStyle = color;
-    context.fillRect(x, y, 30, 30);
+    return {
+        stop() {
+            clearInterval(intervalId);
+        }
+    }
 }
