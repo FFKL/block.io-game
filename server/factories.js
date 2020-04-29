@@ -8,7 +8,7 @@ import { generateX, generateY } from "./generators";
 
 export function createPlayer() {
     const playerId = generateId(10);
-    const color = randomColor({ luminocity: 'dark', format: 'rgb' });
+    const color = randomColor({ luminocity: 'dark', format: 'rgba', alpha: 0.5 });
     const position = { x: generateX(), y: generateY() };
     const name = generateName();
 
