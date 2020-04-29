@@ -1,4 +1,5 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../constants";
+import { roundRect } from "../helpers";
 
 export class Game {
     constructor(ctx) {
@@ -43,6 +44,7 @@ export class Game {
 
     drawRect({ color, state: { x, y } }) {
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(x, y, SQUARE_SIDE, SQUARE_SIDE);
+        this.ctx.strokeStyle = 'black';
+        roundRect(this.ctx, x, y, SQUARE_SIDE, SQUARE_SIDE)
     }
 }

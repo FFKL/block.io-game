@@ -1,7 +1,12 @@
+html * {
+    font-family: 'Manrope', sans-serif;
+}
+
 .title {
     text-align: center;
     margin: 1em 0;
 }
+
 .game {
     display: flex;
     justify-content: center;

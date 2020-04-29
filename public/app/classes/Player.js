@@ -1,5 +1,6 @@
-import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP } from "../constants";
+import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP, SQUARE_SIDE } from "../constants";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../../server/constants";
+import { roundRect } from '../helpers';
 
 export class Player {
     constructor(x, y, color, id, ctx) {
@@ -8,8 +9,8 @@ export class Player {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.width = 30;
-        this.height = 30;
+        this.width = SQUARE_SIDE;
+        this.height = SQUARE_SIDE;
         this.speedCount = 5;
         this.onMoveHandler = () => null;
     }
@@ -18,7 +19,7 @@ export class Player {
         this.onMoveHandler = handler;
     }
 
-    setState({x, y}) {
+    setState({ x, y }) {
         this.x = x;
         this.y = y;
     }
@@ -55,6 +56,7 @@ export class Player {
 
     draw() {
         this.ctx.fillStyle = this.color;
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.ctx.strokeStyle = 'black';
+        roundRect(this.ctx, this.x, this.y, this.width, this.height)
     }
 }
