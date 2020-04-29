@@ -2,8 +2,9 @@ import express from "express";
 import path from "path";
 import generateId from "uid";
 import socketIO from 'socket.io';
+import { log } from './helpers';
+import 'colors';
 
-import { Game } from "./classes/Game";
 import { GamesRegister } from "./classes/GamesRegister";
 
 const app = express();
@@ -19,11 +20,12 @@ app.get('/:roomId', (req, res) => {
 });
 
 const gamesRegister = new GamesRegister();
+gamesRegister.init();
 
 io.on('connection', (socket) => {
     socket.on('join', ({ room, playerId }) => {
-        if (!room) console.error('Room name is not exist');
-        initGameRoom(socket, room, playerId);
+        if (!room) log.err('Room name is not exist')
+        else initGameRoom(socket, room, playerId);
     })
 });
 
@@ -35,14 +37,21 @@ function initGameRoom(socket, roomId, playerId) {
     socket.emit('game-connection', { player });
     io.to(roomId).emit('state', { game })
 
+    log.info('Connected', `SocketID: ${socket.id}, Player: ${JSON.stringify(player, null, 5)}`);
+
     socket.on('move', ({ id, state }) => {
         game.updatePlayerPosition(id, state);
 
         io.to(roomId).emit('state', { game })
     })
 
-    socket.on('disconnect', () => {
-        game.disconnectPlayer(playerId);
+    socket.on('disconnect', (reason) => {
+        game.disconnectPlayer(player.id);
         io.to(roomId).emit('state', { game })
+
+        log.info(
+            'Disconnected',
+            `Reason: ${reason}, SocketID: ${socket.id}, Player: ${JSON.stringify(player, null, 5)}`
+        );
     })
 }

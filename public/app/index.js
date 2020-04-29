@@ -28,12 +28,12 @@ $(document).ready(() => {
     })
 
     const roomId = parseRoomId(document.location.pathname);
-    const playerId = sessionStorage.getItem('playerId');
+    const playerId = localStorage.getItem('playerId');
 
     if (roomId) {
-        socket.emit('join', { playerId, room: roomId })
+        socket.emit('join', { playerId, room: roomId });
     } else {
-        $('#generate-link').modal()
+        $('#generate-link').modal();
     }
 
     let prevState = null;
@@ -57,7 +57,7 @@ function updateScoreView(players) {
     const htmlList = [...players]
         .sort((a, b) => b.score - a.score)
         .map(p => `<li style="color: ${p.color}">${p.name} - ${p.score}</li>`)
-        .join();
+        .join('');
     $('#score').html(htmlList);
 }
 
@@ -69,7 +69,7 @@ function isSameScore(prev, curr) {
 }
 
 function initGame({ id, state: { x, y }, color }, game, ctx) {
-    sessionStorage.setItem('playerId', id);
+    localStorage.setItem('playerId', id);
     const player = new Player(x, y, color, id, ctx);
     player.onMove((x, y) => socket.emit('move', { id, state: { x, y } }))
     game.setPlayer(player)

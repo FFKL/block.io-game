@@ -4,10 +4,16 @@ export class Game {
     constructor() {
         this.players = [];
         this.treasure = createTreasure();
+        this.continueLive();
+    }
+
+    continueLive() {
+        this.lastActivity = Date.now();
     }
 
     addPlayer(player) {
         this.players.push(player);
+        this.continueLive();
     }
 
     getPlayer(playerId) {
@@ -29,6 +35,7 @@ export class Game {
             this.treasure = createTreasure();
             player.increaseScore();
         }
+        this.continueLive()
     }
 
     disconnectPlayer(id) {
@@ -45,6 +52,7 @@ export class Game {
         }
         const player = this.getPlayer(playerId);
         player.connected();
+        this.continueLive();
 
         return player;
     }
