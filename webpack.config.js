@@ -1,8 +1,9 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    mode: "development",
+    mode: 'development',
     entry: './public/app/index.js',
     output: {
         filename: 'index.js',
@@ -13,7 +14,11 @@ module.exports = {
             hash: true,
             template: path.resolve(__dirname, 'public/index.html'),
             filename: 'index.html'
-        })
+        }),
+        new CopyPlugin([{
+            from: path.resolve(__dirname, 'public/assets'),
+            to: 'assets'
+        }])
     ],
     module: {
         rules: [

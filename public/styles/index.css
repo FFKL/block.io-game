@@ -2,32 +2,24 @@ html * {
     font-family: 'Manrope', sans-serif;
 }
 
-.title {
-    text-align: center;
-    margin: 1em 0;
-}
-
-.game {
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-}
-
-.game__field {
-    width: 70%;
-}
-
-.game__field > canvas {
+.container canvas {
     border: 1px solid black;
 }
 
 .score__list {
+    overflow: auto;
+    line-break: anywhere;
     padding: 0;
     list-style: none;
+
 }
 
 .score {
-
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 29em;
+    display: flex;
+    flex-direction: column;
 }
 
 .score__title {

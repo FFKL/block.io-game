@@ -2,32 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>block.io</title>
+    <title>Block.io</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1 class="title"> 🎮Welcome to Amazing Block.io Game</h1>
-<main class="game">
-    <div class="game__field">
-        <canvas id="game" width="720" height="480"></canvas>
-    </div>
-    <div class="game__score score">
-        <h2 class="score__title">Score 🏆</h2>
-        <ul id="score" class="score__list">
-            <li>Test - 0</li>
-        </ul>
-    </div>
-</main>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="navbar-brand" style="width: 60px; height: 60px; background-color: #fff; border-radius: 5px">
+            <img style="max-width: 100%; max-height: 100%" class="d-inline-block align-top" src="assets/logo.png"
+                 width="200" height="200"
+                 alt="block.io logo">
+        </div>
+        <h1 style="font-size: 2.3em; font-family: 'Dancing Script', cursive; color: #ffffff;">Moving blocks are
+            rocks!</h1>
+        <a href="">
+            <img style="filter: invert(1)" src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="github link"
+                 width="32" height="32">
+        </a>
+    </nav>
+</header>
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-
+    <div class="row mt-5 align-items-center" style="height: 30em;">
+        <div class="col-9">
+            <canvas style="width:100%" id="game" width="720" height="480"></canvas>
+        </div>
+        <div class="col-3 score">
+            <h2 class="score__title">Score 🏆</h2>
+            <ul id="score" class="score__list"></ul>
         </div>
     </div>
 </div>
 <div id="generate-link" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Invite your friends!</h5>
@@ -36,15 +45,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="input-group mb-3">
-                    <label>
+                <div class="input-group">
+                    <label style="width: 100%;">
                         <input type="text" class="form-control" id="generate-input">
                     </label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="generate-link-btn" type="button" class="btn btn-secondary">Generate</button>
-                <button type="button" class="btn btn-primary">Play!</button>
+                <button id="play-btn" type="button" class="btn btn-primary">Play!</button>
             </div>
         </div>
     </div>

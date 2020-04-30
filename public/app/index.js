@@ -3,8 +3,8 @@ import 'popper.js';
 import 'bootstrap';
 import io from 'socket.io-client';
 
-import '../styles/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/index.css';
 
 import { Game } from './classes/Game';
 import { Player } from "./classes/Player";
@@ -22,10 +22,17 @@ $(document).ready(() => {
         const origin = document.location.origin;
 
         fetch(`${origin}/roomId`)
+            .then(res => {
+                if (res.ok) return res;
+                throw new Error('Something went wrong')
+            })
             .then(res => res.text())
             .then(id => `${origin}/${id}`)
-            .then(link => $('#generate-input').val(link));
+            .then(link => $('#generate-input').val(link))
+            .catch(e => console.error(e));
     })
+
+    $('#play-btn').on('click', () => window.location = $('#generate-input').val());
 
     const roomId = parseRoomId(document.location.pathname);
     const playerId = localStorage.getItem('playerId');
@@ -56,9 +63,13 @@ function updateState(game, prevState, currState) {
 function updateScoreView(players) {
     const htmlList = [...players]
         .sort((a, b) => b.score - a.score)
-        .map(p => `<li style="color: ${p.color}">${p.name} - ${p.score}</li>`)
+        .map(p => `<li style="color: ${setAlphaChannel(p.color)}">${p.name} - ${p.score}</li>`)
         .join('');
     $('#score').html(htmlList);
+}
+
+function setAlphaChannel(rgba, val = 1) {
+    return rgba.replace(/[^,]+(?=\))/, val);
 }
 
 function isSameScore(prev, curr) {
