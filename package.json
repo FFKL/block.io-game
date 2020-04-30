@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/npm-run-all build server",
+    "start": "node ./dist/server/app.js",
     "build": "./node_modules/.bin/npm-run-all clean server:build public:build",
     "clean": "rimraf dist",
     "public:watch": "webpack-dev-server",
