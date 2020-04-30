@@ -3,7 +3,7 @@ html * {
 }
 
 .container canvas {
-    border: 1px solid black;
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
 }
 
 .score__list {
@@ -15,7 +15,7 @@ html * {
 }
 
 .score {
-    border: 1px solid black;
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
     border-radius: 5px;
     height: 29em;
     display: flex;

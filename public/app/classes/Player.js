@@ -19,11 +19,6 @@ export class Player {
         this.onMoveHandler = handler;
     }
 
-    setState({ x, y }) {
-        this.x = x;
-        this.y = y;
-    }
-
     updatePosition(key) {
         const { x, y } = this;
         const newState = { x, y };

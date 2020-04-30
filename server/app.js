@@ -8,7 +8,7 @@ import 'colors';
 import { GamesRegister } from "./classes/GamesRegister";
 
 const app = express();
-const server = app.listen(3001);
+const server = app.listen(process.env.PORT || 3000);
 const io = socketIO(server);
 
 app.use(express.static(path.resolve(__dirname, '../public')))
