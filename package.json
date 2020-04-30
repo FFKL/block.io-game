@@ -8,13 +8,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "npm-run-all build server",
-    "build": "npm-run-all clean server:build public:build",
+    "start": "./node_modules/.bin/npm-run-all build server",
+    "build": "./node_modules/.bin/npm-run-all clean server:build public:build",
     "clean": "rimraf dist",
     "public:watch": "webpack-dev-server",
     "public:build": "webpack",
     "server": "node ./dist/server/app.js",
-    "server:start": "npm-run-all server:clean server:build",
+    "server:start": "./node_modules/.bin/npm-run-all server:clean server:build",
     "server:watch": "nodemon",
     "server:build": "babel ./server --out-dir ./dist/server",
     "server:clean": "rimraf dist/server"
