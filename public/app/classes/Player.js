@@ -1,5 +1,5 @@
-import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP, SQUARE_SIDE } from "../constants";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../../server/constants";
+import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../../../shared/constants";
 import { roundRect } from '../helpers';
 
 export class Player {

@@ -15,13 +15,14 @@ export class GamesRegister {
     }
 
     init() {
-        setTimeout(() => this.removeOldGames(), GAME_LIVE_THRESHOLD_MS)
+        setInterval(() => this.removeOldGames(), GAME_LIVE_THRESHOLD_MS)
     }
 
     removeOldGames() {
         const oldGameKeys = [];
-        this.games.forEach((game, key) => this.isOldGame() && oldGameKeys.push(key))
-        oldGameKeys.forEach(key => this.games.remove(key));
+        this.games.forEach((game, key) => this.isOldGame(game) && oldGameKeys.push(key));
+        oldGameKeys.forEach(key => this.games.delete(key));
+
     }
 
     isOldGame(game) {

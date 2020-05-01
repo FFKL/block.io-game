@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../../../shared/constants";
 import { roundRect } from "../helpers";
 
 export class Game {

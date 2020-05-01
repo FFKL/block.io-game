@@ -9,12 +9,13 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/server/app.js",
-    "build": "npm-run-all clean server:build public:build",
+    "build": "npm-run-all clean shared:build server:build public:build",
     "clean": "rimraf dist",
     "public:watch": "webpack-dev-server",
     "public:build": "webpack",
     "server:watch": "nodemon",
     "server:build": "babel ./server --out-dir ./dist/server",
+    "shared:build": "babel ./shared --out-dir ./dist/shared",
     "server:clean": "rimraf dist/server"
   },
   "dependencies": {
@@ -33,6 +34,7 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
+    "babel-loader": "^8.1.0",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.2",
     "html-webpack-plugin": "^4.2.0",

@@ -1,4 +1,4 @@
-import { SQUARE_SIDE } from "../constants";
+import { SQUARE_SIDE } from "../../shared/constants";
 
 export class Player {
     constructor(id, name, color, { x, y }, score = 0) {
