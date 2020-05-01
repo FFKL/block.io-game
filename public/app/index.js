@@ -1,6 +1,8 @@
 import $ from 'jquery';
 import 'popper.js';
 import 'bootstrap';
+import React from "react";
+import ReactDOM from "react-dom";
 import io from 'socket.io-client';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
