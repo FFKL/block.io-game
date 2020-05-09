@@ -3,12 +3,10 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../../../shared/consta
 import { roundRect } from '../helpers';
 
 export class Player {
-    constructor(x, y, color, id, ctx) {
-        this.ctx = ctx;
+    constructor(x, y, color, id) {
         this.color = color;
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.position = { x, y };
         this.width = SQUARE_SIDE;
         this.height = SQUARE_SIDE;
         this.speedCount = 5;
@@ -20,7 +18,7 @@ export class Player {
     }
 
     updatePosition(key) {
-        const { x, y } = this;
+        const { x, y } = this.position;
         const newState = { x, y };
         switch (key) {
             case KEY_LEFT: {
@@ -40,18 +38,12 @@ export class Player {
                 break;
             }
         }
-        const isStateChanged = this.x !== newState.x || this.y !== newState.y;
+        const isStateChanged = this.position.x !== newState.x || this.position.y !== newState.y;
 
         if (isStateChanged) {
-            this.x = newState.x;
-            this.y = newState.y;
-            this.onMoveHandler(this.x, this.y);
+            this.position.x = newState.x;
+            this.position.y = newState.y;
+            this.onMoveHandler(this.position.x, this.position.y);
         }
-    }
-
-    draw() {
-        this.ctx.fillStyle = this.color;
-        this.ctx.strokeStyle = 'black';
-        roundRect(this.ctx, this.x, this.y, this.width, this.height)
     }
 }

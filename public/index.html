@@ -9,47 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="navbar-brand" style="width: 60px; height: 60px; background-color: #fff; border-radius: 5px">
-            <img style="max-width: 100%; max-height: 100%" class="d-inline-block align-top" src="assets/logo.png"
-                 width="200" height="200"
-                 alt="block.io logo">
-        </div>
-        <div style="color: #ffffff; display: flex; align-items: flex-end">
-            <h1 style="font-size: 2.3em; font-family: 'Dancing Script', cursive;">
-                Moving blocks rocks!
-            </h1>
-            <span>v0.0.1-alpha</span>
-        </div>
-        <a href="">
-            <img style="filter: invert(1)" src="https://image.flaticon.com/icons/svg/25/25231.svg" alt="github link"
-                 width="32" height="32">
-        </a>
-    </nav>
-</header>
-<div class="container">
-    <div class="row mt-5 align-items-center" style="height: 30em;">
-        <div class="col-9">
-            <canvas style="width:100%" id="game" width="720" height="480"></canvas>
-        </div>
-        <div class="col-3 score">
-            <h2 class="score__title" style="font-family: 'Dancing Script', cursive;">Score 🏆</h2>
-            <ul id="score" class="score__list"></ul>
-        </div>
-    </div>
-</div>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+
 <div id="generate-link" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">C'mon, Grab Your Friends… </h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <span>Copy generated link and send to your friends!</span>
+                <span></span>
                 <div class="input-group">
                     <label style="width: 100%;">
                         <input type="text" class="form-control" id="generate-input">

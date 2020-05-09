@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import generateId from "uid";
 import socketIO from 'socket.io';
+import { GameTransporter } from '../shared/GameTransporter';
 import { log } from './helpers';
 import 'colors';
 
@@ -35,19 +36,18 @@ function initGameRoom(socket, roomId, playerId) {
 
     socket.join(roomId);
     socket.emit('game-connection', { player });
-    io.to(roomId).emit('state', { game })
+    io.to(roomId).emit('state', { game: GameTransporter.pack(game) })
 
     log.info('Connected', `SocketID: ${socket.id}, Player: ${JSON.stringify(player, null, 5)}`);
 
     socket.on('move', ({ id, state }) => {
         game.updatePlayerPosition(id, state);
-
-        io.to(roomId).emit('state', { game })
+        io.to(roomId).emit('state', { game: GameTransporter.pack(game) })
     })
 
     socket.on('disconnect', (reason) => {
         game.disconnectPlayer(player.id);
-        io.to(roomId).emit('state', { game })
+        io.to(roomId).emit('state', { game: GameTransporter.pack(game) })
 
         log.info(
             'Disconnected',
