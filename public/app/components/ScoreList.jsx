@@ -8,7 +8,7 @@ export class ScoreList extends React.Component {
             <React.Fragment>
                 <h2 className="score__title">Score 🏆</h2>
                 <ul className="score__list">
-                    {this.props.players.map((p, id) => <li id={id} style={{ color: setAlphaChannel(p.color) }}>{p.name} - {p.score}</li>)}
+                    {this.props.players.map(p => <li key={p.id} style={{ color: setAlphaChannel(p.color) }}>{p.name} - {p.score}</li>)}
                 </ul>
             </React.Fragment>
         )

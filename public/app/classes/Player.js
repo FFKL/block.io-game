@@ -18,26 +18,7 @@ export class Player {
     }
 
     updatePosition(key) {
-        const { x, y } = this.position;
-        const newState = { x, y };
-        switch (key) {
-            case KEY_LEFT: {
-                (newState.x < 0) ? newState.x = CANVAS_WIDTH - this.width : newState.x -= this.speedCount;
-                break;
-            }
-            case KEY_RIGHT: {
-                (newState.x + this.width > CANVAS_WIDTH) ? newState.x = 0 : newState.x += this.speedCount
-                break;
-            }
-            case KEY_DOWN: {
-                (newState.y < 0) ? newState.y = CANVAS_HEIGHT - this.height : newState.y -= this.speedCount
-                break;
-            }
-            case KEY_UP: {
-                (newState.y > CANVAS_HEIGHT) ? newState.y = 0 : newState.y += this.speedCount;
-                break;
-            }
-        }
+        const newState = this.adjustPositionAccordingToCanvasBoundaries(this.calculateNewState(key));
         const isStateChanged = this.position.x !== newState.x || this.position.y !== newState.y;
 
         if (isStateChanged) {
@@ -45,5 +26,47 @@ export class Player {
             this.position.y = newState.y;
             this.onMoveHandler(this.position.x, this.position.y);
         }
+    }
+
+    calculateNewState(key) {
+        const newState = { ...this.position };
+        switch (key) {
+            case KEY_LEFT: {
+                newState.x -= this.speedCount;
+                break;
+            }
+            case KEY_RIGHT: {
+                newState.x += this.speedCount;
+                break;
+            }
+            case KEY_DOWN: {
+                newState.y -= this.speedCount;
+                break;
+            }
+            case KEY_UP: {
+                newState.y += this.speedCount;
+                break;
+            }
+        }
+
+        return newState;
+    }
+
+    adjustPositionAccordingToCanvasBoundaries(position) {
+        const adjustedPosition = { ...position };
+        if (position.x < 0) {
+            adjustedPosition.x = CANVAS_WIDTH - this.width
+        }
+        if (position.x + this.width > CANVAS_WIDTH) {
+            adjustedPosition.x = 0;
+        }
+        if (position.y < 0) {
+            adjustedPosition.y = CANVAS_HEIGHT - this.height
+        }
+        if (position.y + this.height > CANVAS_HEIGHT) {
+            adjustedPosition.y = 0
+        }
+
+        return adjustedPosition;
     }
 }
