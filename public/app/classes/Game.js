@@ -9,7 +9,8 @@ export class Game {
         this.player = player;
     }
 
-    updateState(game) {
+    updateState({ game }) {
+        this.players = [ ...game.players];
         this.rivals = game.players.filter(p => p.id !== this.player.id && p.isConnected);
         this.treasure = game.treasure;
     }

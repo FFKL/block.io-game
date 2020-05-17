@@ -1,42 +1,40 @@
-import io from 'socket.io-client';
-
-import { Game } from './classes/Game';
 import { Player } from './classes/Player';
-import { GameTransporter } from '../../shared/GameTransporter';
 import { parseRoomId } from './helpers';
 import { ArenaDrawer } from './classes/ArenaDrawer';
+import { Socket } from './classes/Socket';
 
-export function init (showModal, updateScoreList) {
-    const socket = io(origin, { transports: ['websocket', 'polling'] });
-
+export function init(state) {
     const context = document.getElementById("arena").getContext("2d");
+    const socket = new Socket();
     const drawer = new ArenaDrawer(context);
-    const game = new Game();
-
 
     const roomId = parseRoomId(document.location.pathname);
     const playerId = localStorage.getItem('playerId');
 
     if (roomId) {
-        socket.emit('join', { playerId, room: roomId });
+        socket.join(playerId, roomId);
     } else {
-        showModal(true);
+        openInvitationalModal();
     }
 
-    socket.on('game-connection', ({ player }) => initGame(player, game));
-    socket.on('state', (state) => {
-        const gameState = GameTransporter.unpack(state.game)
-        updateScoreList(gameState.players);
-        game.updateState(gameState);
-    })
-    startGameLoop(() => drawer.draw(game));
+    socket
+        .onGameConnection(({ player }) => initGame(player))
+        .onGameStateChanges(state => updateState(state));
 
-    function initGame({ id, position: { x, y }, color }, game) {
+    function initGame({ id, position: { x, y }, color }) {
         localStorage.setItem('playerId', id);
         const player = new Player(x, y, color, id);
-        player.onMove((x, y) => socket.emit('move', { id, state: { x, y } }))
-        game.setPlayer(player)
-        document.addEventListener('keydown', e => player.updatePosition(e.key));
+        player.onMove((x, y) => socket.move(id, { x, y }))
+        state.setPlayer(player);
+        startGameLoop(() => drawer.draw(state.getGame()));
+    }
+
+    function openInvitationalModal() {
+        state.setModal(true);
+    }
+
+    function updateState(inputState) {
+        state.updateGame(inputState);
     }
 
     function startGameLoop(callback) {
