@@ -14,3 +14,14 @@ export function roundRect(ctx, x, y, width, height, radius = 5, fill = true, str
     stroke && ctx.stroke();
     fill && ctx.fill();
 }
+
+
+export function setAlphaChannel(rgba, val = 1) {
+    return rgba.replace(/[^,]+(?=\))/, val);
+}
+
+export function parseRoomId(pathname) {
+    const [, id] = pathname.split('/');
+
+    return id;
+}

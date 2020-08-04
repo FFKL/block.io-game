@@ -2,49 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>block.io</title>
+    <title>Block.io</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1 class="title"> 🎮Welcome to Amazing Block.io Game</h1>
-<main class="game">
-    <div class="game__field">
-        <canvas id="game" width="720" height="480"></canvas>
-    </div>
-    <div class="game__score score">
-        <h2 class="score__title">Score 🏆</h2>
-        <ul id="score" class="score__list">
-            <li>Test - 0</li>
-        </ul>
-    </div>
-</main>
-<div class="container">
-    <div class="row">
-        <div class="col-12">
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
 
-        </div>
-    </div>
-</div>
 <div id="generate-link" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Invite your friends!</h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="input-group mb-3">
-                    <label>
+                <span></span>
+                <div class="input-group">
+                    <label style="width: 100%;">
                         <input type="text" class="form-control" id="generate-input">
                     </label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="generate-link-btn" type="button" class="btn btn-secondary">Generate</button>
-                <button type="button" class="btn btn-primary">Play!</button>
+                <button id="play-btn" type="button" class="btn btn-primary">Play!</button>
             </div>
         </div>
     </div>

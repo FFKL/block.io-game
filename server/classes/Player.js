@@ -1,11 +1,11 @@
-import { SQUARE_SIDE } from "../constants";
+import { SQUARE_SIDE } from "../../shared/constants";
 
 export class Player {
     constructor(id, name, color, { x, y }, score = 0) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.state = { x, y };
+        this.position = { x, y };
         this.score = score;
         this.isConnected = true;
     }
@@ -19,7 +19,7 @@ export class Player {
     }
 
     setPosition({ x, y }) {
-        this.state = { ...this.state, x, y }
+        this.position = { ...this.position, x, y }
     }
 
     increaseScore() {
@@ -29,10 +29,10 @@ export class Player {
     isWinner({ x, y }) {
         return this.isCollision(
             {
-                x1: this.state.x,
-                y1: this.state.y,
-                x2: this.state.x + SQUARE_SIDE,
-                y2: this.state.y + SQUARE_SIDE
+                x1: this.position.x,
+                y1: this.position.y,
+                x2: this.position.x + SQUARE_SIDE,
+                y2: this.position.y + SQUARE_SIDE
             },
             {
                 x1: x,

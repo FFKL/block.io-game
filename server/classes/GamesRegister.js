@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { log } from '../helpers';
 import { GAME_LIVE_THRESHOLD_MS } from "../constants";
 
 export class GamesRegister {
@@ -8,6 +9,7 @@ export class GamesRegister {
 
     ensureRoom(id) {
         if (!this.games.has(id)) {
+            log.info('New room created', `Id: ${id}`);
             this.games.set(id, new Game())
         }
 
@@ -15,13 +17,15 @@ export class GamesRegister {
     }
 
     init() {
-        setTimeout(() => this.removeOldGames(), GAME_LIVE_THRESHOLD_MS)
+        setInterval(() => this.removeOldGames(), GAME_LIVE_THRESHOLD_MS)
     }
 
     removeOldGames() {
         const oldGameKeys = [];
-        this.games.forEach((game, key) => this.isOldGame() && oldGameKeys.push(key))
-        oldGameKeys.forEach(key => this.games.remove(key));
+        this.games.forEach((game, key) => this.isOldGame(game) && oldGameKeys.push(key));
+        oldGameKeys.forEach(key => this.games.delete(key));
+        // TODO: manage socket connections
+        log.info('Inactive games removed', oldGameKeys);
     }
 
     isOldGame(game) {

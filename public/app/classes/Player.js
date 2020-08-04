@@ -1,14 +1,12 @@
-import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP, SQUARE_SIDE } from "../constants";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../../server/constants";
+import { KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_UP } from "../constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SQUARE_SIDE } from "../../../shared/constants";
 import { roundRect } from '../helpers';
 
 export class Player {
-    constructor(x, y, color, id, ctx) {
-        this.ctx = ctx;
+    constructor(x, y, color, id) {
         this.color = color;
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.position = { x, y };
         this.width = SQUARE_SIDE;
         this.height = SQUARE_SIDE;
         this.speedCount = 5;
@@ -19,44 +17,56 @@ export class Player {
         this.onMoveHandler = handler;
     }
 
-    setState({ x, y }) {
-        this.x = x;
-        this.y = y;
+    updatePosition(key) {
+        const newState = this.adjustPositionAccordingToCanvasBoundaries(this.calculateNewState(key));
+        const isStateChanged = this.position.x !== newState.x || this.position.y !== newState.y;
+
+        if (isStateChanged) {
+            this.position.x = newState.x;
+            this.position.y = newState.y;
+            this.onMoveHandler(this.position.x, this.position.y);
+        }
     }
 
-    updatePosition(key) {
-        const { x, y } = this;
-        const newState = { x, y };
+    calculateNewState(key) {
+        const newState = { ...this.position };
         switch (key) {
             case KEY_LEFT: {
-                (newState.x < 0) ? newState.x = CANVAS_WIDTH - this.width : newState.x -= this.speedCount;
+                newState.x -= this.speedCount;
                 break;
             }
             case KEY_RIGHT: {
-                (newState.x + this.width > CANVAS_WIDTH) ? newState.x = 0 : newState.x += this.speedCount
+                newState.x += this.speedCount;
                 break;
             }
             case KEY_DOWN: {
-                (newState.y < 0) ? newState.y = CANVAS_HEIGHT - this.height : newState.y -= this.speedCount
+                newState.y -= this.speedCount;
                 break;
             }
             case KEY_UP: {
-                (newState.y > CANVAS_HEIGHT) ? newState.y = 0 : newState.y += this.speedCount;
+                newState.y += this.speedCount;
                 break;
             }
         }
-        const isStateChanged = this.x !== newState.x || this.y !== newState.y;
 
-        if (isStateChanged) {
-            this.x = newState.x;
-            this.y = newState.y;
-            this.onMoveHandler(this.x, this.y);
-        }
+        return newState;
     }
 
-    draw() {
-        this.ctx.fillStyle = this.color;
-        this.ctx.strokeStyle = 'black';
-        roundRect(this.ctx, this.x, this.y, this.width, this.height)
+    adjustPositionAccordingToCanvasBoundaries(position) {
+        const adjustedPosition = { ...position };
+        if (position.x < 0) {
+            adjustedPosition.x = CANVAS_WIDTH - this.width
+        }
+        if (position.x + this.width > CANVAS_WIDTH) {
+            adjustedPosition.x = 0;
+        }
+        if (position.y < 0) {
+            adjustedPosition.y = CANVAS_HEIGHT - this.height
+        }
+        if (position.y + this.height > CANVAS_HEIGHT) {
+            adjustedPosition.y = 0
+        }
+
+        return adjustedPosition;
     }
 }

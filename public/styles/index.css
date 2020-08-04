@@ -2,34 +2,59 @@ html * {
     font-family: 'Manrope', sans-serif;
 }
 
-.title {
-    text-align: center;
-    margin: 1em 0;
+.logo {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 5px
 }
 
-.game {
+.logo__img {
+    max-width: 100%;
+    max-height: 100%
+}
+
+.header__title {
+    color: #ffffff;
     display: flex;
-    justify-content: center;
-    width: 100vw;
+    align-items: flex-end
 }
 
-.game__field {
-    width: 70%;
+.title {
+    font-size: 2.3em;
+    font-family: 'Dancing Script', cursive;
 }
 
-.game__field > canvas {
-    border: 1px solid black;
+.github-icon {
+    filter: invert(1);
+}
+
+.game-container {
+    height: 30em;
+}
+
+.game-container canvas {
+    width: 100%;
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
 }
 
 .score__list {
+    overflow: auto;
+    line-break: anywhere;
     padding: 0;
     list-style: none;
+
 }
 
 .score {
-
+    box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+    height: 29em;
+    display: flex;
+    flex-direction: column;
 }
 
 .score__title {
     text-align: center;
+    font-family: 'Dancing Script', cursive;
 }
