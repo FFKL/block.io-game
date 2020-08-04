@@ -18,7 +18,7 @@ export class Header extends React.Component {
                         </h1>
                         <span>v0.0.1-alpha</span>
                     </div>
-                    <a href="">
+                    <a href="https://github.com/FFKL/block.io-game" target="_blank" rel="noopener noreferrer">
                         <img className="github-icon"
                              src="https://image.flaticon.com/icons/svg/25/25231.svg"
                              alt="github link"
